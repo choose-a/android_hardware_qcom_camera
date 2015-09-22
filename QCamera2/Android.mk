@@ -7,6 +7,9 @@ include $(CLEAR_VARS)
 LOCAL_COPY_HEADERS_TO := qcom/camera
 LOCAL_COPY_HEADERS := QCameraFormat.h
 
+# Too many clang warnings/errors, see b/23163853.
+LOCAL_CLANG := false
+
 LOCAL_SRC_FILES := \
         util/QCameraCmdThread.cpp \
         util/QCameraQueue.cpp \
