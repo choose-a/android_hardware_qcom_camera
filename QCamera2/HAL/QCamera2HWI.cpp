@@ -1698,6 +1698,7 @@ QCamera2HardwareInterface::~QCamera2HardwareInterface()
     mDeferredWorkThread.exit();
 
     if (mMetadataMem != NULL) {
+        mMetadataMem->deallocate();
         delete mMetadataMem;
         mMetadataMem = NULL;
     }
