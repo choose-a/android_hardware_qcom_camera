@@ -31,8 +31,8 @@
 /* Macros exposed to gralloc to query camera HAL for gralloc format to be
 used for vedor specific camera formats. */
 
-#define PREFERRED_IMPLEMENTATION_DEFINED_CAMERA_FORMAT HAL_PIXEL_FORMAT_YCrCb_420_SP
-#define PREFERRED_YCBCR_420_888_CAMERA_FORMAT HAL_PIXEL_FORMAT_YCrCb_420_SP
+#define PREFERRED_IMPLEMENTATION_DEFINED_CAMERA_FORMAT HAL_PIXEL_FORMAT_YCbCr_420_SP_VENUS
+#define PREFERRED_YCBCR_420_888_CAMERA_FORMAT HAL_PIXEL_FORMAT_NV21_ZSL
 
 /* Macros exposed to camera HAL to get the preview and callback stream
 formats. Please ensure that if the macros below are changed then the
