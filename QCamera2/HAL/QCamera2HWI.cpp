@@ -47,6 +47,7 @@
 #include "QCameraBufferMaps.h"
 #include "QCameraFlash.h"
 #include "QCameraTrace.h"
+#include "QCameraDisplay.h"
 
 extern "C" {
 #include "mm_camera_dbg.h"
@@ -1734,6 +1735,11 @@ QCamera2HardwareInterface::QCamera2HardwareInterface(uint32_t cameraId)
     mCameraDevice.ops = &mCameraOps;
     mCameraDevice.priv = this;
 
+#ifndef USE_DISPLAY_SERVICE
+    mCameraDisplay = new QCameraDisplay();
+#else
+    mCameraDisplay = QCameraDisplay::instance();
+#endif
     mDualCamera = is_dual_camera_by_idx(cameraId);
     pthread_condattr_t mCondAttr;
 
@@ -2086,6 +2092,13 @@ int QCamera2HardwareInterface::openCamera()
     property_get("persist.camera.cache.optimize", value, "1");
     m_bOptimizeCacheOps = atoi(value);
 
+#ifdef USE_DISPLAY_SERVICE
+         if(!mCameraDisplay->startVsync(TRUE))
+         {
+             LOGE("Error: Cannot start vsync (still continue)");
+         }
+#endif //USE_DISPLAY_SERVICE
+
     return NO_ERROR;
 
 error_exit3:
@@ -2391,6 +2404,10 @@ int QCamera2HardwareInterface::closeCamera()
         LOGD("Failed to release flash for camera id: %d",
                 mCameraId);
     }
+
+#ifdef USE_DISPLAY_SERVICE
+        mCameraDisplay->startVsync(FALSE);
+#endif //Use_DISPLAY_SERVICE
 
     LOGI("[KPI Perf]: X PROFILE_CLOSE_CAMERA camera id %d, rc: %d",
          mCameraId, rc);
